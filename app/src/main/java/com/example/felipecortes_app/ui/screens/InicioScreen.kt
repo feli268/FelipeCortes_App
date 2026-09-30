@@ -1,37 +1,61 @@
 package com.example.felipecortes_app.ui.screens
 
-import androidx.compose.runtime.Composable
-import com.example.felipecortes_app.viewmodel.InicioViewModel
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.Text
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.size
-import androidx.compose.ui.res.painterResource
 import com.example.felipecortes_app.R
+import com.example.felipecortes_app.viewmodel.InicioViewModel
 
+// Pantalla de Inicio del caso (Junta de Vecinos Población Zaror).
+// Recibe un InicioViewModel en vez de manejar datos acá, para mantener la separación MVVM.
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InicioScreen(viewModel: InicioViewModel = viewModel())
-{
+fun InicioScreen(viewModel: InicioViewModel = viewModel()) {
+
+    // Scaffold: esqueleto Material 3 que reserva el espacio de la barra superior.
     Scaffold(
         topBar = {
+            // Barra superior con el nombre de la organización (dato del ViewModel).
             TopAppBar(title = { Text(viewModel.nombreOrganizacion) })
         }
     ) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding).padding(16.dp)) {
+
+        // Column: apila los elementos. verticalArrangement da espacio uniforme entre ellos (punto 4),
+        // horizontalAlignment los centra para que la pantalla se vea ordenada (punto 6).
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Logo de la organización (res/drawable/logo.png).
             Image(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = "Logo de la Junta de Vecinos",
                 modifier = Modifier.size(96.dp)
             )
-            Text("Bienvenido")
+
+            // Texto de bienvenida, usando el color primario del tema en vez de un color fijo (punto 5).
+            Text(
+                text = "Bienvenido/a",
+                color = MaterialTheme.colorScheme.primary
+            )
+
+            // Dato dinámico desde el ViewModel (referencia del caso: 2-3 arriendos al mes).
             Text("Arriendos este mes: ${viewModel.arriendosDelMes}")
         }
     }
