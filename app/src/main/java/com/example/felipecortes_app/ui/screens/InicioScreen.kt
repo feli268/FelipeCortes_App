@@ -11,6 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.res.painterResource
+import com.example.felipecortes_app.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,6 +26,11 @@ fun InicioScreen(viewModel: InicioViewModel = viewModel())
         }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding).padding(16.dp)) {
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = "Logo de la Junta de Vecinos",
+                modifier = Modifier.size(96.dp)
+            )
             Text("Bienvenido")
             Text("Arriendos este mes: ${viewModel.arriendosDelMes}")
         }
