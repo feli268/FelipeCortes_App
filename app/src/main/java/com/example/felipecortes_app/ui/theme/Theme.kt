@@ -12,32 +12,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = Naranja80,
+    secondary = Cafe80,
+    tertiary = Verde80,
+    background = FondoOscuro,
+    surface = FondoOscuro,
+    onBackground = TextoOscuro,
+    onSurface = TextoOscuro
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primary = Naranja40,
+    secondary = Cafe40,
+    tertiary = Verde40,
+    background = FondoClaro,
+    surface = FondoClaro,
+    onBackground = TextoClaro,
+    onSurface = TextoClaro
 )
 
 @Composable
 fun FelipeCortes_AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    // Lo dejamos en false para que siempre se use la paleta propia de la app,
+    // en vez de la paleta automática de Android 12+ basada en el fondo de pantalla.
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -55,4 +54,7 @@ fun FelipeCortes_AppTheme(
         typography = Typography,
         content = content
     )
+
+
+
 }

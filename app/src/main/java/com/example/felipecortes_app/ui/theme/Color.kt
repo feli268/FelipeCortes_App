@@ -2,10 +2,20 @@ package com.example.felipecortes_app.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// Naranja: color principal, combina con el logo
+val Naranja80 = Color(0xFFFFB68C)
+val Naranja40 = Color(0xFFC96A2E)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+// Café/tierra: color secundario
+val Cafe80 = Color(0xFFE3C9B6)
+val Cafe40 = Color(0xFF7A5B43)
+
+// Verde: color de acento, evoca comunidad/vecindario
+val Verde80 = Color(0xFFB7DEC0)
+val Verde40 = Color(0xFF3F7D52)
+
+val FondoClaro = Color(0xFFF0DCC0)
+val TextoClaro = Color(0xFF241F16)
+
+val FondoOscuro = Color(0xFF161310)
+val TextoOscuro = Color(0xFFF3EDE1)
