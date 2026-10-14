@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,21 +21,27 @@ import com.example.felipecortes_app.R
 import com.example.felipecortes_app.viewmodel.InicioViewModel
 
 // Pantalla de Inicio del caso (Junta de Vecinos Población Zaror).
-// Recibe un InicioViewModel en vez de manejar datos acá, para mantener la separación MVVM.
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InicioScreen(viewModel: InicioViewModel = viewModel()) {
+fun InicioScreen(
+    viewModel: InicioViewModel = viewModel(),
+    anchoDisponible: WindowWidthSizeClass
+) {
+    // Guía 9 - Adaptabilidad: el tamaño del logo cambia según el ancho de pantalla disponible.
+    // Compact = versión compacta (celular normal)
+    // Medium  = versión media (celular grande / tablet vertical)
+    // Expanded = versión expandida (tablet horizontal / pantalla grande)
+    val tamanoLogo = when (anchoDisponible) {
+        WindowWidthSizeClass.Compact -> 96.dp
+        WindowWidthSizeClass.Medium -> 140.dp
+        else -> 200.dp
+    }
 
-    // Scaffold: esqueleto Material 3 que reserva el espacio de la barra superior.
     Scaffold(
         topBar = {
-            // Barra superior con el nombre de la organización (dato del ViewModel).
             TopAppBar(title = { Text(viewModel.nombreOrganizacion) })
         }
     ) { innerPadding ->
-
-        // Column: apila los elementos. verticalArrangement da espacio uniforme entre ellos (punto 4),
-        // horizontalAlignment los centra para que la pantalla se vea ordenada (punto 6).
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -42,20 +49,17 @@ fun InicioScreen(viewModel: InicioViewModel = viewModel()) {
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Logo de la organización (res/drawable/logo.png).
             Image(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = "Logo de la Junta de Vecinos",
-                modifier = Modifier.size(96.dp)
+                modifier = Modifier.size(tamanoLogo)
             )
 
-            // Texto de bienvenida, usando el color primario del tema en vez de un color fijo (punto 5).
             Text(
                 text = "Bienvenido/a",
                 color = MaterialTheme.colorScheme.primary
             )
 
-            // Dato dinámico desde el ViewModel (referencia del caso: 2-3 arriendos al mes).
             Text("Arriendos este mes: ${viewModel.arriendosDelMes}")
         }
     }
