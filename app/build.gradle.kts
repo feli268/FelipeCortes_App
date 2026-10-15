@@ -55,4 +55,5 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
     implementation("androidx.compose.material3:material3-window-size-class")
     implementation("androidx.navigation:navigation-compose:2.8.4")
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 }
