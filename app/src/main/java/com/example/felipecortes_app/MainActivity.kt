@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.felipecortes_app.ui.screens.InicioScreen
+import com.example.felipecortes_app.ui.navigation.AppNavigation
 import com.example.felipecortes_app.ui.theme.FelipeCortes_AppTheme
 import com.example.felipecortes_app.ui.utils.obtenerAnchoDisponible
 
@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             FelipeCortes_AppTheme {
                 val anchoDisponible = obtenerAnchoDisponible(this)
-                InicioScreen(anchoDisponible = anchoDisponible)
+                AppNavigation(anchoDisponible = anchoDisponible)
             }
         }
     }

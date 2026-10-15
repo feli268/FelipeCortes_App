@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -20,17 +21,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.felipecortes_app.R
 import com.example.felipecortes_app.viewmodel.InicioViewModel
 
-// Pantalla de Inicio del caso (Junta de Vecinos Población Zaror).
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InicioScreen(
     viewModel: InicioViewModel = viewModel(),
-    anchoDisponible: WindowWidthSizeClass
+    anchoDisponible: WindowWidthSizeClass,
+    onVerDetalle: () -> Unit
 ) {
-    // Guía 9 - Adaptabilidad: el tamaño del logo cambia según el ancho de pantalla disponible.
-    // Compact = versión compacta (celular normal)
-    // Medium  = versión media (celular grande / tablet vertical)
-    // Expanded = versión expandida (tablet horizontal / pantalla grande)
     val tamanoLogo = when (anchoDisponible) {
         WindowWidthSizeClass.Compact -> 96.dp
         WindowWidthSizeClass.Medium -> 140.dp
@@ -61,6 +58,10 @@ fun InicioScreen(
             )
 
             Text("Arriendos este mes: ${viewModel.arriendosDelMes}")
+
+            Button(onClick = onVerDetalle) {
+                Text("Ver detalle de arriendo")
+            }
         }
     }
 }
