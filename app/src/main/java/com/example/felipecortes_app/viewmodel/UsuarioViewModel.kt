@@ -8,10 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 class UsuarioViewModel : ViewModel() {
 
-    // _uiState es privado y mutable (solo el ViewModel lo puede cambiar).
     private val _uiState = MutableStateFlow(UsuarioUiState())
-
-    // uiState es la versión pública, de solo lectura, que las pantallas van a observar.
     val uiState: StateFlow<UsuarioUiState> = _uiState
 
     fun onNombreChange(valor: String) {
@@ -26,12 +23,25 @@ class UsuarioViewModel : ViewModel() {
         _uiState.value = _uiState.value.copy(direccion = valor)
     }
 
+    fun onNumeroPersonasChange(valor: String) {
+        // Solo aceptamos dígitos, para que este campo siempre represente un número válido.
+        if (valor.all { it.isDigit() }) {
+            _uiState.value = _uiState.value.copy(numeroPersonas = valor)
+        }
+    }
+
+    fun onFechaArriendoChange(valor: String) {
+        _uiState.value = _uiState.value.copy(fechaArriendo = valor)
+    }
+
+    fun onRequiereSonidoChange(valor: Boolean) {
+        _uiState.value = _uiState.value.copy(requiereSonido = valor)
+    }
+
     fun onAceptaTerminosChange(valor: Boolean) {
         _uiState.value = _uiState.value.copy(aceptaTerminos = valor)
     }
 
-    // Revisa cada campo, guarda los mensajes de error en el estado,
-    // y devuelve true solo si no hay ningún error.
     fun validarFormulario(): Boolean {
         val estado = _uiState.value
 
@@ -39,6 +49,9 @@ class UsuarioViewModel : ViewModel() {
             nombre = if (estado.nombre.isBlank()) "El nombre es obligatorio" else null,
             correo = if (!estado.correo.contains("@")) "Correo inválido" else null,
             direccion = if (estado.direccion.isBlank()) "La dirección es obligatoria" else null,
+            numeroPersonas = if (estado.numeroPersonas.toIntOrNull() == null || estado.numeroPersonas.toInt() <= 0)
+                "Ingresa un número válido" else null,
+            fechaArriendo = if (estado.fechaArriendo.isBlank()) "Selecciona una fecha" else null,
             aceptaTerminos = if (!estado.aceptaTerminos) "Debes aceptar los términos" else null
         )
 
@@ -47,6 +60,8 @@ class UsuarioViewModel : ViewModel() {
         return errores.nombre == null &&
                 errores.correo == null &&
                 errores.direccion == null &&
+                errores.numeroPersonas == null &&
+                errores.fechaArriendo == null &&
                 errores.aceptaTerminos == null
     }
 }

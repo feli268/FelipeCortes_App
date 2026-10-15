@@ -37,6 +37,9 @@ fun ResumenScreen(
             Text("Nombre: ${estado.nombre}")
             Text("Correo: ${estado.correo}")
             Text("Dirección: ${estado.direccion}")
+            Text("Número de personas: ${estado.numeroPersonas}")
+            Text("Fecha del arriendo: ${estado.fechaArriendo}")
+            Text("Requiere equipo de sonido: ${if (estado.requiereSonido) "Sí" else "No"}")
             Text("Acepta términos: ${if (estado.aceptaTerminos) "Sí" else "No"}")
 
             Button(onClick = onVolverInicio) {

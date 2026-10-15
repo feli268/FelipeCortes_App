@@ -9,15 +9,13 @@ import androidx.navigation.compose.rememberNavController
 import com.example.felipecortes_app.ui.screens.DetalleArriendoScreen
 import com.example.felipecortes_app.ui.screens.InicioScreen
 import com.example.felipecortes_app.ui.screens.RegistroScreen
+import com.example.felipecortes_app.ui.screens.ReporteScreen
 import com.example.felipecortes_app.ui.screens.ResumenScreen
 import com.example.felipecortes_app.viewmodel.UsuarioViewModel
 
 @Composable
 fun AppNavigation(anchoDisponible: WindowWidthSizeClass) {
     val navController = rememberNavController()
-
-    // Una sola instancia de UsuarioViewModel, compartida entre "registro" y "resumen"
-    // para que ambas pantallas lean los mismos datos del formulario.
     val usuarioViewModel: UsuarioViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = "inicio") {
@@ -25,7 +23,8 @@ fun AppNavigation(anchoDisponible: WindowWidthSizeClass) {
             InicioScreen(
                 anchoDisponible = anchoDisponible,
                 onVerDetalle = { navController.navigate("detalle") },
-                onSolicitarArriendo = { navController.navigate("registro") }
+                onSolicitarArriendo = { navController.navigate("registro") },
+                onReportarProblema = { navController.navigate("reporte") }
             )
         }
         composable("detalle") {
@@ -42,6 +41,9 @@ fun AppNavigation(anchoDisponible: WindowWidthSizeClass) {
                 viewModel = usuarioViewModel,
                 onVolverInicio = { navController.popBackStack("inicio", false) }
             )
+        }
+        composable("reporte") {
+            ReporteScreen()
         }
     }
 }

@@ -45,7 +45,8 @@ fun InicioScreen(
     viewModel: InicioViewModel = viewModel(),
     anchoDisponible: WindowWidthSizeClass,
     onVerDetalle: () -> Unit,
-    onSolicitarArriendo: () -> Unit
+    onSolicitarArriendo: () -> Unit,
+    onReportarProblema: () -> Unit
 ) {
     val tamanoLogo = when (anchoDisponible) {
         WindowWidthSizeClass.Compact -> 96.dp
@@ -86,25 +87,23 @@ fun InicioScreen(
                 Text("Solicitar arriendo")
             }
 
+            Button(onClick = onReportarProblema) {
+                Text("Reportar un problema")
+            }
+
             SeccionModoTesorero()
         }
     }
 }
 
-// Guía 12: estado tipo interruptor persistido con DataStore, con feedback animado.
 @Composable
 private fun SeccionModoTesorero() {
     val context = LocalContext.current
     val alcance = rememberCoroutineScope()
 
-    // Valor guardado en DataStore. Empieza en null: significa "todavía no sabemos qué había guardado".
     val modoGuardado by AjustesRepository.leerModoEspecial(context).collectAsState(initial = null)
-
-    // Si se muestra el panel de detalles. Solo necesita sobrevivir a una rotación de pantalla,
-    // no a que cierres la app, por eso usa rememberSaveable y no DataStore.
     var mostrarDetalles by rememberSaveable { mutableStateOf(false) }
 
-    // Texto calculado a partir de modoGuardado, para no repetir el mismo "if" en el código.
     val etiquetaModo by remember(modoGuardado) {
         derivedStateOf {
             when (modoGuardado) {
@@ -121,7 +120,6 @@ private fun SeccionModoTesorero() {
     )
 
     if (modoGuardado == null) {
-        // Todavía no terminamos de leer DataStore por primera vez.
         CircularProgressIndicator()
     } else {
         Column(
