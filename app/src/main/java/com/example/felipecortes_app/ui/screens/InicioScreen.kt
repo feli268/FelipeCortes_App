@@ -26,7 +26,8 @@ import com.example.felipecortes_app.viewmodel.InicioViewModel
 fun InicioScreen(
     viewModel: InicioViewModel = viewModel(),
     anchoDisponible: WindowWidthSizeClass,
-    onVerDetalle: () -> Unit
+    onVerDetalle: () -> Unit,
+    onSolicitarArriendo: () -> Unit
 ) {
     val tamanoLogo = when (anchoDisponible) {
         WindowWidthSizeClass.Compact -> 96.dp
@@ -61,6 +62,10 @@ fun InicioScreen(
 
             Button(onClick = onVerDetalle) {
                 Text("Ver detalle de arriendo")
+            }
+
+            Button(onClick = onSolicitarArriendo) {
+                Text("Solicitar arriendo")
             }
         }
     }
