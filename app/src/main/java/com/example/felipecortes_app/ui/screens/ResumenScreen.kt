@@ -1,5 +1,6 @@
 package com.example.felipecortes_app.ui.screens
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.felipecortes_app.viewmodel.UsuarioViewModel
 
@@ -23,6 +25,7 @@ fun ResumenScreen(
     onVolverInicio: () -> Unit
 ) {
     val estado by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("Resumen de la solicitud") }) }
@@ -41,6 +44,26 @@ fun ResumenScreen(
             Text("Fecha del arriendo: ${estado.fechaArriendo}")
             Text("Requiere equipo de sonido: ${if (estado.requiereSonido) "Sí" else "No"}")
             Text("Acepta términos: ${if (estado.aceptaTerminos) "Sí" else "No"}")
+
+            Button(onClick = {
+                val texto = """
+                    Solicitud de arriendo - Junta de Vecinos Población Zaror
+                    Nombre: ${estado.nombre}
+                    Correo: ${estado.correo}
+                    Dirección: ${estado.direccion}
+                    Número de personas: ${estado.numeroPersonas}
+                    Fecha del arriendo: ${estado.fechaArriendo}
+                    Requiere equipo de sonido: ${if (estado.requiereSonido) "Sí" else "No"}
+                """.trimIndent()
+
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, texto)
+                }
+                context.startActivity(Intent.createChooser(intent, "Compartir solicitud"))
+            }) {
+                Text("Compartir resumen")
+            }
 
             Button(onClick = onVolverInicio) {
                 Text("Volver al inicio")
