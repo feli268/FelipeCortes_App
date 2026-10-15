@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
@@ -25,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.felipecortes_app.viewmodel.UsuarioViewModel
 import java.util.Calendar
 
@@ -32,12 +34,12 @@ import java.util.Calendar
 @Composable
 fun RegistroScreen(
     viewModel: UsuarioViewModel,
-    onFormularioValido: () -> Unit
+    onFormularioValido: () -> Unit,
+    onVolver: () -> Unit
 ) {
     val estado by viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
-    // Selector de fecha nativo de Android. Al elegir un día, se lo mandamos al ViewModel.
     val calendario = remember { Calendar.getInstance() }
     val selectorFecha = remember {
         DatePickerDialog(
@@ -53,7 +55,16 @@ fun RegistroScreen(
     }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Solicitud de arriendo") }) }
+        topBar = {
+            TopAppBar(
+                title = { Text("Solicitud de arriendo") },
+                navigationIcon = {
+                    IconButton(onClick = onVolver) {
+                        Text("←", fontSize = 20.sp)
+                    }
+                }
+            )
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -62,7 +73,6 @@ fun RegistroScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Campo String
             OutlinedTextField(
                 value = estado.nombre,
                 onValueChange = { viewModel.onNombreChange(it) },
@@ -72,7 +82,6 @@ fun RegistroScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // Campo String
             OutlinedTextField(
                 value = estado.correo,
                 onValueChange = { viewModel.onCorreoChange(it) },
@@ -82,7 +91,6 @@ fun RegistroScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // Campo String
             OutlinedTextField(
                 value = estado.direccion,
                 onValueChange = { viewModel.onDireccionChange(it) },
@@ -92,7 +100,6 @@ fun RegistroScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // Campo Int
             OutlinedTextField(
                 value = estado.numeroPersonas,
                 onValueChange = { viewModel.onNumeroPersonasChange(it) },
@@ -103,7 +110,6 @@ fun RegistroScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // Campo Date
             OutlinedTextField(
                 value = estado.fechaArriendo,
                 onValueChange = {},
@@ -117,7 +123,6 @@ fun RegistroScreen(
                 Text("Elegir fecha")
             }
 
-            // Switch
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("¿Requiere equipo de sonido?")
                 Switch(
@@ -126,7 +131,6 @@ fun RegistroScreen(
                 )
             }
 
-            // Checkbox
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
                     checked = estado.aceptaTerminos,
@@ -136,7 +140,6 @@ fun RegistroScreen(
             }
             estado.errores.aceptaTerminos?.let { Text(it) }
 
-            // Button
             Button(onClick = {
                 if (viewModel.validarFormulario()) {
                     onFormularioValido()

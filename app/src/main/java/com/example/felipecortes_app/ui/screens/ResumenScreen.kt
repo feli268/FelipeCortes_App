@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -16,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.felipecortes_app.viewmodel.UsuarioViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,7 +30,16 @@ fun ResumenScreen(
     val context = LocalContext.current
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Resumen de la solicitud") }) }
+        topBar = {
+            TopAppBar(
+                title = { Text("Resumen de la solicitud") },
+                navigationIcon = {
+                    IconButton(onClick = onVolverInicio) {
+                        Text("←", fontSize = 20.sp)
+                    }
+                }
+            )
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -63,10 +74,6 @@ fun ResumenScreen(
                 context.startActivity(Intent.createChooser(intent, "Compartir solicitud"))
             }) {
                 Text("Compartir resumen")
-            }
-
-            Button(onClick = onVolverInicio) {
-                Text("Volver al inicio")
             }
         }
     }

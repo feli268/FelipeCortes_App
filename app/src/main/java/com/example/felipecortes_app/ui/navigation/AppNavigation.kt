@@ -33,7 +33,8 @@ fun AppNavigation(anchoDisponible: WindowWidthSizeClass) {
         composable("registro") {
             RegistroScreen(
                 viewModel = usuarioViewModel,
-                onFormularioValido = { navController.navigate("resumen") }
+                onFormularioValido = { navController.navigate("resumen") },
+                onVolver = { navController.popBackStack() }
             )
         }
         composable("resumen") {
@@ -43,7 +44,7 @@ fun AppNavigation(anchoDisponible: WindowWidthSizeClass) {
             )
         }
         composable("reporte") {
-            ReporteScreen()
+            ReporteScreen(onVolver = { navController.popBackStack() })
         }
     }
 }
