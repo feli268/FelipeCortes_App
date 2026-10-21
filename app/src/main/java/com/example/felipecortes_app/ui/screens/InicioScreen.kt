@@ -56,7 +56,7 @@ fun InicioScreen(
     anchoDisponible: WindowWidthSizeClass,
     onVerDetalle: () -> Unit,
     onSolicitarArriendo: () -> Unit,
-    onReportarProblema: () -> Unit
+    onReportarProblema: () -> Unit,
 ) {
     val tamanoLogo = when (anchoDisponible) {
         WindowWidthSizeClass.Compact -> 56.dp

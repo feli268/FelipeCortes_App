@@ -49,8 +49,12 @@ class UsuarioViewModel : ViewModel() {
             nombre = if (estado.nombre.isBlank()) "El nombre es obligatorio" else null,
             correo = if (!estado.correo.contains("@")) "Correo inválido" else null,
             direccion = if (estado.direccion.isBlank()) "La dirección es obligatoria" else null,
-            numeroPersonas = if (estado.numeroPersonas.toIntOrNull() == null || estado.numeroPersonas.toInt() <= 0)
-                "Ingresa un número válido" else null,
+            numeroPersonas = when {
+                estado.numeroPersonas.toIntOrNull() == null -> "Ingresa un número válido"
+                estado.numeroPersonas.toInt() <= 0 -> "Debe ser al menos 1 persona"
+                estado.numeroPersonas.toInt() > 50 -> "No puede superar las 50 personas"
+                else -> null
+            },
             fechaArriendo = if (estado.fechaArriendo.isBlank()) "Selecciona una fecha" else null,
             aceptaTerminos = if (!estado.aceptaTerminos) "Debes aceptar los términos" else null
         )

@@ -140,6 +140,7 @@ fun RegistroScreen(
             }
             estado.errores.aceptaTerminos?.let { Text(it) }
 
+
             Button(onClick = {
                 if (viewModel.validarFormulario()) {
                     onFormularioValido()
