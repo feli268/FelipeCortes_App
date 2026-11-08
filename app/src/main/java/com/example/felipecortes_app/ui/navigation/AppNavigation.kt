@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.felipecortes_app.ui.screens.DetalleArriendoScreen
 import com.example.felipecortes_app.ui.screens.InicioScreen
+import com.example.felipecortes_app.ui.screens.PostScreen
 import com.example.felipecortes_app.ui.screens.RegistroScreen
 import com.example.felipecortes_app.ui.screens.ReporteScreen
 import com.example.felipecortes_app.ui.screens.ResumenScreen
@@ -24,7 +25,8 @@ fun AppNavigation(anchoDisponible: WindowWidthSizeClass) {
                 anchoDisponible = anchoDisponible,
                 onVerDetalle = { navController.navigate("detalle") },
                 onSolicitarArriendo = { navController.navigate("registro") },
-                onReportarProblema = { navController.navigate("reporte") }
+                onReportarProblema = { navController.navigate("reporte") },
+                onVerPosts = { navController.navigate("posts") }
             )
         }
         composable("detalle") {
@@ -45,6 +47,9 @@ fun AppNavigation(anchoDisponible: WindowWidthSizeClass) {
         }
         composable("reporte") {
             ReporteScreen(onVolver = { navController.popBackStack() })
+        }
+        composable("posts") {
+            PostScreen()
         }
     }
 }

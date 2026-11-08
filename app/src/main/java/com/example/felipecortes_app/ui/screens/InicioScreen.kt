@@ -57,6 +57,7 @@ fun InicioScreen(
     onVerDetalle: () -> Unit,
     onSolicitarArriendo: () -> Unit,
     onReportarProblema: () -> Unit,
+    onVerPosts: () -> Unit,
 ) {
     val tamanoLogo = when (anchoDisponible) {
         WindowWidthSizeClass.Compact -> 56.dp
@@ -91,6 +92,11 @@ fun InicioScreen(
                     titulo = "Reportar un problema",
                     subtitulo = "Avisa a la directiva sobre un espacio",
                     onClick = onReportarProblema
+                )
+                TarjetaAccion(
+                    titulo = "Ver posts",
+                    subtitulo = "Consulta publicaciones desde la API",
+                    onClick = onVerPosts
                 )
                 SeccionModoTesorero()
             }
