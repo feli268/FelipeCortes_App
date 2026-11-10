@@ -33,6 +33,22 @@ android {
     buildFeatures {
         compose = true
     }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            all {
+                it.useJUnitPlatform()
+            }
+        }
+    }
+    packaging {
+        resources {
+            excludes += setOf(
+                "/META-INF/LICENSE.md",
+                "/META-INF/LICENSE-notice.md"
+            )
+        }
+    }
 }
 
 dependencies {
@@ -60,4 +76,13 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
     implementation("androidx.compose.material:material-icons-extended")
+    testImplementation(platform("io.kotest:kotest-bom:5.9.1"))
+    testImplementation("io.kotest:kotest-runner-junit5")
+    testImplementation("io.kotest:kotest-assertions-core")
+    testImplementation("io.mockk:mockk:1.13.12")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
+
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    androidTestImplementation("io.mockk:mockk-android:1.13.12")
 }

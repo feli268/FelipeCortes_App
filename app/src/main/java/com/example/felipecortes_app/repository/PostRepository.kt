@@ -1,27 +1,30 @@
 package com.example.felipecortes_app.repository
 
 import com.example.felipecortes_app.data.model.Post
+import com.example.felipecortes_app.data.remote.ApiService
 import com.example.felipecortes_app.data.remote.RetrofitInstance
 
-class PostRepository {
+class PostRepository(
+    private val api: ApiService = RetrofitInstance.api
+) {
 
     suspend fun obtenerPosts(): List<Post> {
-        return RetrofitInstance.api.obtenerPosts()
+        return api.obtenerPosts()
     }
 
     suspend fun obtenerPostPorId(id: Int): Post {
-        return RetrofitInstance.api.obtenerPostPorId(id)
+        return api.obtenerPostPorId(id)
     }
 
     suspend fun crearPost(post: Post): Post {
-        return RetrofitInstance.api.crearPost(post)
+        return api.crearPost(post)
     }
 
     suspend fun actualizarPost(id: Int, post: Post): Post {
-        return RetrofitInstance.api.actualizarPost(id, post)
+        return api.actualizarPost(id, post)
     }
 
     suspend fun eliminarPost(id: Int) {
-        RetrofitInstance.api.eliminarPost(id)
+        api.eliminarPost(id)
     }
 }
