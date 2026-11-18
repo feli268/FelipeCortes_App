@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
@@ -12,15 +13,22 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.felipecortes_app.data.model.Post
+import com.example.felipecortes_app.data.local.AppDatabase
 import com.example.felipecortes_app.viewmodel.PostViewModel
+import com.example.felipecortes_app.viewmodel.PostViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostScreen(
-    viewModel: PostViewModel = viewModel()
+    onVolver: () -> Unit,
+    viewModel: PostViewModel = run {
+        val context = LocalContext.current
+        val dao = AppDatabase.obtenerInstancia(context).postDao()
+        viewModel(factory = PostViewModelFactory(dao))
+    }
 ) {
     val posts by viewModel.posts.collectAsState()
     val cargando by viewModel.cargando.collectAsState()
@@ -28,12 +36,24 @@ fun PostScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Posts") })
+            TopAppBar(
+                title = { Text("Posts") },
+                navigationIcon = {
+                    IconButton(onClick = onVolver) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                    }
+                }
+            )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 viewModel.crearPost(
-                    Post(userId = 1, id = 0, title = "Post de prueba", body = "Creado desde la app")
+                    com.example.felipecortes_app.data.model.Post(
+                        userId = 1,
+                        id = 0,
+                        title = "Post de prueba",
+                        body = "Creado desde la app"
+                    )
                 )
             }) {
                 Icon(Icons.Default.Add, contentDescription = "Crear post de prueba")

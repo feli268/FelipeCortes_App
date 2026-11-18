@@ -22,6 +22,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
@@ -45,6 +46,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.felipecortes_app.R
+import com.example.felipecortes_app.data.model.Rol
 import com.example.felipecortes_app.repository.AjustesRepository
 import com.example.felipecortes_app.viewmodel.InicioViewModel
 import kotlinx.coroutines.launch
@@ -54,10 +56,16 @@ import kotlinx.coroutines.launch
 fun InicioScreen(
     viewModel: InicioViewModel = viewModel(),
     anchoDisponible: WindowWidthSizeClass,
+    nombreUsuario: String,
+    rol: Rol,
     onVerDetalle: () -> Unit,
     onSolicitarArriendo: () -> Unit,
+    onRevisarSolicitudes: () -> Unit,
+    onVerMovimientos: () -> Unit,
+    onVerInforme: () -> Unit,
     onReportarProblema: () -> Unit,
     onVerPosts: () -> Unit,
+    onCerrarSesion: () -> Unit,
 ) {
     val tamanoLogo = when (anchoDisponible) {
         WindowWidthSizeClass.Compact -> 56.dp
@@ -65,9 +73,20 @@ fun InicioScreen(
         else -> 110.dp
     }
 
+    // Qué puede ver cada rol
+    val puedeSolicitar = rol == Rol.VECINO || rol == Rol.ADMIN
+    val puedeRevisar = rol == Rol.DIRECTIVA || rol == Rol.ADMIN
+    val puedeVerFinanzas = rol == Rol.TESORERIA || rol == Rol.ADMIN
+    val puedeReportar = rol != Rol.TESORERIA
+    val verModoTesorero = rol == Rol.TESORERIA || rol == Rol.ADMIN
+
     Scaffold { innerPadding ->
         Column(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
-            EncabezadoInicio(nombreOrganizacion = viewModel.nombreOrganizacion)
+            EncabezadoInicio(
+                nombreOrganizacion = viewModel.nombreOrganizacion,
+                nombreUsuario = nombreUsuario,
+                rol = rol
+            )
 
             Column(
                 modifier = Modifier
@@ -83,29 +102,57 @@ fun InicioScreen(
                     subtitulo = "Revisa el estado del arriendo actual",
                     onClick = onVerDetalle
                 )
+                if (puedeSolicitar) {
+                    TarjetaAccion(
+                        titulo = "Solicitar arriendo",
+                        subtitulo = "Pide un espacio comunitario",
+                        onClick = onSolicitarArriendo
+                    )
+                }
+                if (puedeRevisar) {
+                    TarjetaAccion(
+                        titulo = "Revisar solicitudes",
+                        subtitulo = "Aprueba o rechaza solicitudes de arriendo",
+                        onClick = onRevisarSolicitudes
+                    )
+                }
+                if (puedeVerFinanzas) {
+                    TarjetaAccion(
+                        titulo = "Movimientos financieros",
+                        subtitulo = "Registra ingresos y gastos y revisa el saldo",
+                        onClick = onVerMovimientos
+                    )
+                }
                 TarjetaAccion(
-                    titulo = "Solicitar arriendo",
-                    subtitulo = "Pide un espacio comunitario",
-                    onClick = onSolicitarArriendo
+                    titulo = "Informe financiero",
+                    subtitulo = "Consulta ingresos, gastos y saldo por período",
+                    onClick = onVerInforme
                 )
-                TarjetaAccion(
-                    titulo = "Reportar un problema",
-                    subtitulo = "Avisa a la directiva sobre un espacio",
-                    onClick = onReportarProblema
-                )
+                if (puedeReportar) {
+                    TarjetaAccion(
+                        titulo = "Reportar un problema",
+                        subtitulo = "Avisa a la directiva sobre un espacio",
+                        onClick = onReportarProblema
+                    )
+                }
                 TarjetaAccion(
                     titulo = "Ver posts",
                     subtitulo = "Consulta publicaciones desde la API",
                     onClick = onVerPosts
                 )
-                SeccionModoTesorero()
+                if (verModoTesorero) {
+                    SeccionModoTesorero()
+                }
+                OutlinedButton(onClick = onCerrarSesion, modifier = Modifier.fillMaxWidth()) {
+                    Text("Cerrar sesión")
+                }
             }
         }
     }
 }
 
 @Composable
-private fun EncabezadoInicio(nombreOrganizacion: String) {
+private fun EncabezadoInicio(nombreOrganizacion: String, nombreUsuario: String, rol: Rol) {
     Surface(color = MaterialTheme.colorScheme.primary, modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(20.dp),
@@ -118,8 +165,8 @@ private fun EncabezadoInicio(nombreOrganizacion: String) {
                 }
             }
             Column {
-                Text("¡Hola, vecino/a!", color = MaterialTheme.colorScheme.onPrimary, fontWeight = FontWeight.Bold)
-                Text(nombreOrganizacion, color = MaterialTheme.colorScheme.onPrimary)
+                Text("¡Hola, $nombreUsuario!", color = MaterialTheme.colorScheme.onPrimary, fontWeight = FontWeight.Bold)
+                Text("$nombreOrganizacion · ${rol.name}", color = MaterialTheme.colorScheme.onPrimary)
             }
         }
     }
